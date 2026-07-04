@@ -1,0 +1,1830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>House Edge Memory | Thoughts Draft</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="favicon.png">
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4854306717629925"
+    crossorigin="anonymous"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    :root {
+      --bg: #0b0b0b;
+      --card: #151515;
+      --card-2: #1b1b1b;
+      --border: #262626;
+      --text: #ffffff;
+      --muted: #c2c2c2;
+      --muted-2: #8f8f8f;
+      --accent: #e50914;
+      --accent-hover: #ff2c38;
+      --max-width: 1180px;
+      --reading-width: 820px;
+      --radius: 14px;
+      --shadow: 0 14px 40px rgba(0, 0, 0, 0.25);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.9;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      width: min(100% - 40px, var(--max-width));
+      margin: 0 auto;
+    }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(11, 11, 11, 0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    nav {
+      min-height: 78px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      position: relative;
+    }
+
+    .logo {
+      font-size: 1.7rem;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      color: var(--text);
+      z-index: 1002;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 26px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: #ededed;
+      font-size: 0.98rem;
+      transition: color 0.25s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--accent);
+    }
+
+    .menu-toggle {
+      display: none;
+      width: 48px;
+      height: 48px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: #131313;
+      border-radius: 12px;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      z-index: 1002;
+      transition: 0.25s ease;
+    }
+
+    .menu-toggle:hover {
+      border-color: rgba(255,255,255,0.22);
+      background: #181818;
+    }
+
+    .menu-toggle span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: #fff;
+      border-radius: 999px;
+      position: relative;
+      transition: 0.3s ease;
+    }
+
+    .menu-toggle span::before,
+    .menu-toggle span::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      width: 22px;
+      height: 2px;
+      background: #fff;
+      border-radius: 999px;
+      transition: 0.3s ease;
+    }
+
+    .menu-toggle span::before {
+      top: -7px;
+    }
+
+    .menu-toggle span::after {
+      top: 7px;
+    }
+
+    .menu-toggle.active span {
+      background: transparent;
+    }
+
+    .menu-toggle.active span::before {
+      top: 0;
+      transform: rotate(45deg);
+    }
+
+    .menu-toggle.active span::after {
+      top: 0;
+      transform: rotate(-45deg);
+    }
+
+    /* Hero */
+    .story-hero {
+      position: relative;
+      padding: 100px 0 72px;
+      overflow: hidden;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0.42), rgba(0,0,0,0.82)),
+        radial-gradient(circle at top center, rgba(229, 9, 20, 0.18), transparent 34%);
+    }
+
+    .story-hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to right, rgba(0,0,0,0.82), rgba(0,0,0,0.55)),
+        radial-gradient(circle at center, rgba(150, 0, 0, 0.18), transparent 38%);
+      opacity: 1;
+    }
+
+    .story-hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 18px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(229, 9, 20, 0.12);
+      color: #ffd5d8;
+      border: 1px solid rgba(229, 9, 20, 0.24);
+      font-size: 0.9rem;
+    }
+
+    .story-hero h1 {
+      font-size: clamp(2.5rem, 5vw, 4.3rem);
+      line-height: 1.08;
+      margin-bottom: 16px;
+    }
+
+    .story-hero p {
+      color: var(--muted);
+      max-width: 760px;
+      margin: 0 auto;
+      font-size: 1.05rem;
+    }
+
+    .story-meta-bar {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 26px;
+    }
+
+    .meta-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 16px;
+      border-radius: 999px;
+      background: rgba(20,20,20,0.95);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #ededed;
+      box-shadow: var(--shadow);
+      font-size: 0.95rem;
+    }
+
+    section {
+      padding: 80px 0;
+    }
+
+    .section-heading {
+      max-width: 760px;
+      margin: 0 auto 38px;
+      text-align: center;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(1.75rem, 3vw, 2.4rem);
+      margin-bottom: 12px;
+    }
+
+    .section-heading p {
+      color: var(--muted);
+    }
+
+    /* Intro cards */
+    .story-intro-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 26px;
+      align-items: stretch;
+    }
+
+    .panel {
+      background: linear-gradient(180deg, var(--card) 0%, #101010 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      box-shadow: var(--shadow);
+    }
+
+    .panel h2 {
+      font-size: 1.75rem;
+      margin-bottom: 14px;
+    }
+
+    .panel p {
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .theme-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .theme-item {
+      background: linear-gradient(180deg, #171717 0%, #111111 100%);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+    }
+
+    .theme-item strong {
+      display: block;
+      margin-bottom: 6px;
+      color: #fff;
+    }
+
+    .theme-item span {
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    /* Story article */
+    .reading-wrap {
+      max-width: var(--reading-width);
+      margin: 0 auto;
+    }
+
+    .story-article {
+      background: linear-gradient(180deg, #141414 0%, #101010 100%);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 42px;
+      box-shadow: var(--shadow);
+    }
+
+    .story-article p {
+      color: #dedede;
+      margin-bottom: 18px;
+      font-size: 1.04rem;
+    }
+
+    .story-article p.lead:first-letter {
+      float: left;
+      font-size: 3.4rem;
+      line-height: 0.92;
+      padding-right: 10px;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .story-article strong {
+      color: #fff;
+    }
+
+    .story-break {
+      margin: 34px 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    .story-break span {
+      width: 90px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(255,255,255,0.22), transparent);
+      display: block;
+    }
+
+    /* Story footer note */
+    .story-note {
+      max-width: var(--reading-width);
+      margin: 28px auto 0;
+      background:
+        radial-gradient(circle at top right, rgba(229, 9, 20, 0.12), transparent 30%),
+        linear-gradient(180deg, #171717 0%, #121212 100%);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .story-note h3 {
+      margin-bottom: 12px;
+      font-size: 1.2rem;
+    }
+
+    .story-note p {
+      color: var(--muted);
+    }
+
+    /* CTA buttons */
+    .story-actions {
+      max-width: var(--reading-width);
+      margin: 28px auto 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 50px;
+      padding: 0 24px;
+      border-radius: 999px;
+      font-weight: 700;
+      border: 1px solid transparent;
+      transition: 0.25s ease;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: #161616;
+      border-color: var(--border);
+      color: #fff;
+    }
+
+    .btn-secondary:hover {
+      border-color: rgba(229, 9, 20, 0.32);
+      color: var(--accent);
+    }
+
+    /* More stories */
+    .related-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .related-card {
+      background: linear-gradient(180deg, var(--card) 0%, var(--card-2) 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+      box-shadow: var(--shadow);
+    }
+
+    .related-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(229, 9, 20, 0.28);
+    }
+
+    .story-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(229, 9, 20, 0.1);
+      color: #ffd7da;
+      border: 1px solid rgba(229, 9, 20, 0.2);
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .related-card h3 {
+      font-size: 1.18rem;
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+
+    .related-card p {
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .related-card a {
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .related-card a:hover {
+      color: var(--accent);
+    }
+
+    footer {
+      padding: 32px 0 50px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      background: #0b0b0b;
+      margin-top: 30px;
+    }
+
+    .footer-wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .footer-brand p {
+      color: var(--muted-2);
+      margin-top: 6px;
+      font-size: 0.95rem;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: #d5d5d5;
+      transition: color 0.25s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+
+    @media (max-width: 1100px) {
+      .story-intro-grid,
+      .related-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 820px) {
+      .menu-toggle {
+        display: inline-flex;
+      }
+
+      .nav-links {
+        position: absolute;
+        top: calc(100% + 14px);
+        left: 0;
+        right: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        background: rgba(14, 14, 14, 0.98);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 20px 45px rgba(0,0,0,0.35);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-12px);
+        transition: 0.3s ease;
+        pointer-events: none;
+      }
+
+      .nav-links.open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+
+      .nav-links li {
+        width: 100%;
+      }
+
+      .nav-links a {
+        display: block;
+        width: 100%;
+        padding: 16px 20px;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+      }
+
+      .nav-links li:last-child a {
+        border-bottom: none;
+      }
+
+      section {
+        padding: 65px 0;
+      }
+
+      .story-hero {
+        padding: 85px 0 60px;
+      }
+
+      .panel,
+      .story-article,
+      .related-card,
+      .story-note {
+        padding: 24px;
+      }
+
+      .footer-wrap {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .story-hero h1 {
+        font-size: 2.2rem;
+      }
+
+      .story-article p {
+        font-size: 1rem;
+      }
+
+      .story-actions {
+        flex-direction: column;
+      }
+
+      .story-actions .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">Thoughts <span>Draft</span></div>
+
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="mobileNav">
+          <span></span>
+        </button>
+
+        <ul class="nav-links" id="mobileNav">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="stories.html" class="active">Stories</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section class="story-hero">
+    <div class="container story-hero-inner">
+      <span class="eyebrow">Original Story • Psychological Mystery / Drama</span>
+      <h1>House Edge Memory</h1>
+      <p>
+        When a struggling architect returns to the abandoned house where his family once lived, he discovers that the building has started remembering things he cannot — and some memories were never meant to come back.
+      </p>
+
+      <div class="story-meta-bar">
+        <div class="meta-pill">Published July 2026</div>
+        <div class="meta-pill">Approx. 12 min read</div>
+        <div class="meta-pill">Psychological Mystery</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="story-intro-grid">
+        <div class="panel">
+          <h2>About This Story</h2>
+          <p>
+            <strong>House Edge Memory</strong> is a psychological mystery about grief, buried truth, and the strange way places can seem to hold on to what people try to forget.
+            Set inside a decaying family home on the edge of a nearly abandoned street, the story follows Elias Rowan as he returns to settle his late mother’s affairs — only to find the house behaving as if it remembers him better than he remembers himself.
+          </p>
+          <p>
+            What begins as a quiet homecoming turns into a confrontation with fractured memory, childhood fear, and a question that grows harder to ignore: what if the house is not haunted by ghosts, but by the parts of Elias’s past he forced himself not to see?
+          </p>
+          <p>
+            At its heart, the story explores how memory protects us, how silence distorts the truth, and how some homes never stop keeping score.
+          </p>
+        </div>
+
+        <div class="panel">
+          <h2>Story Themes</h2>
+          <div class="theme-list">
+            <div class="theme-item">
+              <strong>Memory & Suppression</strong>
+              <span>The story examines how the mind buries painful truths and what happens when forgotten memories begin forcing their way back to the surface.</span>
+            </div>
+
+            <div class="theme-item">
+              <strong>Home as a Witness</strong>
+              <span>The house is more than a setting — it becomes an active presence, a silent witness to what happened and what Elias has spent years trying not to remember.</span>
+            </div>
+
+            <div class="theme-item">
+              <strong>Grief, Guilt & Inheritance</strong>
+              <span>Beyond mystery, the story explores what emotional inheritance looks like when a family leaves behind not only property, but unanswered questions and unresolved harm.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="reading-wrap">
+        <article class="story-article">
+          <p class="lead">
+            The house stood at the edge of Briar Lane like it had been waiting to be accused.
+          </p>
+
+          <p>
+            Every other home on the street had either been renovated, sold, or pulled down entirely. But Number 18 remained.
+          </p>
+
+          <p>
+            Same steep roof. Same black shutters. Same narrow porch where rainwater always gathered in the left corner.
+          </p>
+
+          <p>
+            Elias Rowan had not seen it in fourteen years.
+          </p>
+
+          <p>
+            He parked across the street and stared through the windshield, both hands still on the steering wheel.
+          </p>
+
+          <p>
+            His mother had died three weeks earlier.
+          </p>
+
+          <p>
+            A stroke, the hospital said. Quick. Quiet. Peaceful.
+          </p>
+
+          <p>
+            The lawyer’s message had been simpler.
+          </p>
+
+          <p>
+            <strong>You need to come home. The house is yours now.</strong>
+          </p>
+
+          <p>
+            Elias had nearly laughed when he read it.
+          </p>
+
+          <p>
+            Home was not the word he would have chosen.
+          </p>
+
+          <p>
+            He stepped out of the car.
+          </p>
+
+          <p>
+            The air smelled of wet leaves and metal.
+          </p>
+
+          <p>
+            Somewhere nearby, thunder rolled behind a bank of dark clouds.
+          </p>
+
+          <p>
+            The weather forecast had promised rain by evening.
+          </p>
+
+          <p>
+            He walked to the gate and noticed that it was already open.
+          </p>
+
+          <p>
+            He was certain he had never touched it.
+          </p>
+
+          <div class="story-break"><span></span></div>
+
+          <p>
+            Inside, the house smelled exactly as he remembered and not at all like it should have.
+          </p>
+
+          <p>
+            Old wood.
+          </p>
+
+          <p>
+            Dust.
+          </p>
+
+          <p>
+            Faded perfume.
+          </p>
+
+          <p>
+            It was impossible. A locked house left mostly empty for years should have smelled dead.
+          </p>
+
+          <p>
+            But this place smelled inhabited.
+          </p>
+
+          <p>
+            Not lived in.
+          </p>
+
+          <p>
+            Inhabited.
+          </p>
+
+          <p>
+            Elias stood in the hallway and let his eyes adjust.
+          </p>
+
+          <p>
+            The wallpaper was peeling in thin curls.
+          </p>
+
+          <p>
+            The grandfather clock near the staircase had stopped at 2:17.
+          </p>
+
+          <p>
+            His mother’s umbrella stand was still by the front door.
+          </p>
+
+          <p>
+            Three umbrellas.
+          </p>
+
+          <p>
+            One walking cane.
+          </p>
+
+          <p>
+            And a brass shoehorn he remembered his father using before he disappeared.
+          </p>
+
+          <p>
+            Elias frowned.
+          </p>
+
+          <p>
+            He had no memory of bringing that shoehorn back after the police took their statements.
+          </p>
+
+          <p>
+            In fact, he had no memory of seeing it ever again.
+          </p>
+
+          <p>
+            Yet there it was, polished and upright, as if it had never left.
+          </p>
+
+          <div class="story-break"><span></span></div>
+
+          <p>
+            His father had vanished in that house when Elias was twelve.
+          </p>
+
+          <p>
+            That was how the story had always been told.
+          </p>
+
+          <p>
+            Not died.
+          </p>
+
+          <p>
+            Not abandoned them.
+          </p>
+
+          <p>
+            Vanished.
+          </p>
+
+          <p>
+            One night he was there, arguing with Elias’s mother in the kitchen while rain battered the windows.
+          </p>
+
+          <p>
+            The next morning he was gone.
+          </p>
+
+          <p>
+            No note. No suitcase. No body.
+          </p>
+
+          <p>
+            The police searched the neighborhood, the woods, the river path, and every bus station within fifty miles.
+          </p>
+
+          <p>
+            Nothing.
+          </p>
+
+          <p>
+            The case became a rumor, then a pitying story, then silence.
+          </p>
+
+          <p>
+            His mother never remarried.
+          </p>
+
+          <p>
+            She also never sold the house.
+          </p>
+
+          <p>
+            “Some things don’t leave because you want them to,” she once told Elias.
+          </p>
+
+          <p>
+            At the time, he thought she was talking about grief.
+          </p>
+
+          <p>
+            Standing in the hallway now, he was no longer sure.
+          </p>
+
+          <div class="story-break"><span></span></div>
+
+          <p>
+            He spent the afternoon opening curtains, dusting shelves, and sorting paperwork at the dining table.
+          </p>
+
+          <p>
+            Most of it was ordinary: unpaid utility notices, medication receipts, property tax reminders, grocery lists written in his mother’s cramped hand.
+          </p>
+
+          <p>
+            Then he found the notebook.
+          </p>
+
+          <p>
+            It was tucked beneath an old recipe book in the kitchen drawer beside the sink.
+          </p>
+
+          <p>
+            Plain black cover. No label.
+          </p>
+
+          <p>
+            Inside, every page was dated.
+          </p>
+
+          <p>
+            Not recent dates.
+          </p>
+
+          <p>
+            Dates from the summer his father disappeared.
+          </p>
+
+          <p>
+            June 11.
+          </p>
+
+          <p>
+            June 12.
+          </p>
+
+          <p>
+            June 13.
+          </p>
+
+          <p>
+            Elias flipped through with a growing tightness in his chest.
+          </p>
+
+          <p>
+            Each page held only one sentence.
+          </p>
+
+          <p><strong>He is hearing the walls again.</strong></p>
+          <p><strong>Elias says the scratching starts after midnight.</strong></p>
+          <p><strong>Do not let him go into the cellar alone.</strong></p>
+          <p><strong>He asked me why the house repeats things.</strong></p>
+
+          <p>
+            Elias stopped reading.
+          </p>
+
+          <p>
+            His mouth had gone dry.
+          </p>
+
+          <p>
+            He had no memory of scratching in the walls.
+          </p>
+
+          <p>
+            No memory of being afraid of the cellar.
+          </p>
+
+          <p>
+            No memory of ever saying the house repeated things.
+          </p>
+
+          <p>
+            Yet his mother had written the entries in her unmistakable handwriting.
+          </p>
+
+          <div class="story-break"><span></span></div>
+
+          <p>
+            By sunset, the rain began.
+          </p>
+
+          <p>
+            It tapped at first, soft against the windows.
+          </p>
+
+          <p>
+            Then harder.
+          </p>
+
+          <p>
+            Then with the full force of a storm that had been waiting all day to arrive.
+          </p>
+
+          <p>
+            Elias should have left.
+          </p>
+
+          <p>
+            Instead, he stayed.
+          </p>
+
+          <p>
+            He told himself it was practical. The roads would flood. The motel in town was twenty minutes away. He still had paperwork to finish.
+          </p>
+
+          <p>
+            But sometime after nine, practicality stopped being the reason.
+          </p>
+
+          <p>
+            He was in the upstairs bedroom — his childhood room — when he heard the sound.
+          </p>
+
+          <p>
+            Three knocks.
+          </p>
+
+          <p>
+            Slow.
+          </p>
+
+          <p>
+            Hollow.
+          </p>
+
+          <p>
+            Coming from beneath the floorboards.
+          </p>
+
+          <p>
+            Elias froze.
+          </p>
+
+          <p>
+            Another three knocks.
+          </p>
+
+          <p>
+            Then silence.
+          </p>
+
+          <p>
+            He stood so quickly the chair toppled behind him.
+          </p>
+
+          <p>
+            “Hello?”
+          </p>
+
+          <p>
+            The word sounded ridiculous the moment he said it.
+          </p>
+
+          <p>
+            No answer came.
+          </p>
+
+          <p>
+            Only rain.
+          </p>
+
+          <p>
+            And then, faintly, a dragging sound moving through the walls.
+          </p>
+
+          <div class="story-break"><span></span></div>
+
+          <p>
+            He did not sleep.
+          </p>
+
+          <p>
+            At 1:13 a.m., he found himself standing at the cellar door with a flashlight in one hand and the notebook in the other.
+          </p>
+
+          <p>
+            He didn’t remember walking downstairs.
+          </p>
+
+          <p>
+            The notebook was open to the final page.
+          </p>
+
+          <p><strong>June 19 — If he remembers, he will go looking. If he goes looking, the house will show him.</strong></p>
+
+          <p>
+            Elias read the line three times.
+          </p>
+
+          <p>
+            His thumb trembled against the paper.
+          </p>
+
+          <p>
+            The cellar door stood half open.
+          </p>
+
+          <p>
+            He was certain he had left it shut.
+          </p>
+
+          <p>
+            Cold air drifted upward from the darkness below.
+          </p>
+
+          <p>
+            It smelled like damp concrete and old pennies.
+          </p>
+
+          <p>
+            He pushed the door wider.
+          </p>
+
+          <p>
+            The staircase descended into blackness.
+          </p>
+
+          <p>
+            Step by step, Elias went down.
+          </p>
+
+          <p>
+            The beam of the flashlight shook against the walls.
+          </p>
+
+          <p>
+            The cellar was smaller than he remembered.
+          </p>
+
+          <p>
+            Or perhaps memory had made it larger.
+          </p>
+
+          <p>
+            Shelves lined one side of the room, stacked with paint tins, broken lamp parts, gardening tools, and boxes so water-stained their labels had dissolved years ago.
+          </p>
+
+          <p>
+            At the far end stood an old workbench.
+          </p>
+
+          <p>
+            On top of it was a tape recorder.
+          </p>
+
+          <p>
+            Small. Rectangular. Grey plastic.
+          </p>
+
+          <p>
+            His father’s.
+          </p>
+
+          <div class="story-break"><span></span></div>
+
+          <p>
+            Elias stared at it for a long moment before stepping closer.
+          </p>
+
+          <p>
+            The recorder was plugged into the wall.
+          </p>
+
+          <p>
+            That made no sense. The outlet beside the bench hadn’t worked since he was a child.
+          </p>
+
+          <p>
+            Yet a red light blinked on the machine.
+          </p>
+
+          <p>
+            PLAY.
+          </p>
+
+          <p>
+            The label was written in black marker.
+          </p>
+
+          <p>
+            <strong>FOR ELIAS — IF THE HOUSE STARTS AGAIN</strong>
+          </p>
+
+          <p>
+            His stomach tightened so sharply he had to brace one hand against the workbench.
+          </p>
+
+          <p>
+            He pressed play.
+          </p>
+
+          <p>
+            Static crackled.
+          </p>
+
+          <p>
+            Then his father’s voice emerged, older and thinner than memory had preserved it.
+          </p>
+
+          <p>
+            “If you’re hearing this, it means one of two things. Either I found the courage to tell you the truth… or the house got tired of waiting.”
+          </p>
+
+          <p>
+            Elias stopped breathing.
+          </p>
+
+          <p>
+            Rain hammered the basement window.
+          </p>
+
+          <p>
+            On the tape, his father gave a dry, exhausted laugh.
+          </p>
+
+          <p>
+            “I don’t know which would be worse.”
+          </p>
+
+          <p>
+            The recording clicked, then continued.
+          </p>
+
+          <p>
+            “Your mother says houses don’t remember. She says people do, and they blame places because it’s easier. Maybe she’s right. But if she’s wrong, then this house has spent years learning our voices.”
+          </p>
+
+          <p>
+            Elias gripped the edge of the bench.
+          </p>
+
+          <p>
+            “You were asleep that night,” his father said. “At least, that’s what we hoped. But children hear more than adults think. They hear the fight. They hear the glass break. They hear what comes after.”
+          </p>
+
+          <p>
+            Elias squeezed his eyes shut.
+          </p>
+
+          <p>
+            Something stirred in the back of his mind — not a memory yet, but pressure. Like a locked door shaking in its frame.
+          </p>
+
+          <p>
+            “I need you to understand this,” the voice continued. “I did not disappear. I left because if I stayed, your mother was going to call the police. And if she did, you would have learned what I did in that kitchen.”
+          </p>
+
+          <p>
+            Elias opened his eyes.
+          </p>
+
+          <p>
+            The cellar seemed to tilt around him.
+          </p>
+
+          <p>
+            “I pushed her,” his father said quietly. “Harder than I meant to. She hit the cabinet. There was blood. Not much. Enough.”
+          </p>
+
+          <p>
+            The pressure behind Elias’s eyes sharpened.
+          </p>
+
+          <p>
+            Suddenly he was twelve again, standing halfway down the stairs in the dark, fingers wrapped around the banister, watching his father loom over his mother in the kitchen.
+          </p>
+
+          <p>
+            Rain on the windows.
+          </p>
+
+          <p>
+            A shattered glass.
+          </p>
+
+          <p>
+            His mother crying.
+          </p>
+
+          <p>
+            His father turning and seeing him there.
+          </p>
+
+          <p>
+            The memory hit with such force Elias staggered backward.
+          </p>
+
+          <div class="story-break"><span></span></div>
+
+          <p>
+            “You saw me,” the tape said.
+          </p>
+
+          <p>
+            “That was the part I couldn’t live with.”
+          </p>
+
+          <p>
+            Elias’s hands began to shake.
+          </p>
+
+          <p>
+            “Your mother told the police I was unstable. She let them think I ran. She said it was kinder than making you testify to what you saw. Maybe she was right. Maybe she was saving you. But she also made you forget.”
+          </p>
+
+          <p>
+            A sound escaped Elias’s throat — not quite a laugh, not quite a sob.
+          </p>
+
+          <p>
+            Made you forget.
+          </p>
+
+          <p>
+            That was impossible.
+          </p>
+
+          <p>
+            And yet…
+          </p>
+
+          <p>
+            The notebook.
+          </p>
+
+          <p>
+            The scratching.
+          </p>
+
+          <p>
+            The terror of the cellar he couldn’t explain.
+          </p>
+
+          <p>
+            “I came back once,” the voice continued. “Two weeks later. I stood outside and saw you at the upstairs window. You looked right at me, but there was nothing in your face. No recognition. Your mother had already convinced you I was gone in the cleanest way possible.”
+          </p>
+
+          <p>
+            The tape hissed.
+          </p>
+
+          <p>
+            “If the house is making you remember, then maybe that’s mercy. Maybe a lie can survive in a person longer than it can survive in a room.”
+          </p>
+
+          <p>
+            The recording went silent for a few seconds.
+          </p>
+
+          <p>
+            When his father spoke again, his voice was almost a whisper.
+          </p>
+
+          <p>
+            “I buried the truth where you’d only find it if you came back willing to lose the version of your life that felt safer.”
+          </p>
+
+          <p>
+            Another click.
+          </p>
+
+          <p>
+            “Look beneath the floor.”
+          </p>
+
+          <p>
+            The tape ended.
+          </p>
+
+          <div class="story-break"><span></span></div>
+
+          <p>
+            Elias stood motionless.
+          </p>
+
+          <p>
+            The rain outside had softened, but the house had become unbearably still.
+          </p>
+
+          <p>
+            He lowered the flashlight to the concrete floor.
+          </p>
+
+          <p>
+            There, just below the workbench, one section of the cellar floor was framed by a rectangle of newer cement.
+          </p>
+
+          <p>
+            Not new, exactly.
+          </p>
+
+          <p>
+            Just newer than the rest.
+          </p>
+
+          <p>
+            He dropped to one knee and ran his hand across it.
+          </p>
+
+          <p>
+            The edges were uneven.
+          </p>
+
+          <p>
+            Repaired badly.
+          </p>
+
+          <p>
+            Hastily.
+          </p>
+
+          <p>
+            He looked around until he found a rusted pry bar hanging from the wall.
+          </p>
+
+          <p>
+            The first strike did almost nothing.
+          </p>
+
+          <p>
+            The second chipped the surface.
+          </p>
+
+          <p>
+            By the fifth, his palms were blistering.
+          </p>
+
+          <p>
+            By the tenth, he was crying without realizing it.
+          </p>
+
+          <p>
+            When the cement finally broke wide enough, he dropped the pry bar and reached into the hollow beneath.
+          </p>
+
+          <p>
+            His fingers touched metal.
+          </p>
+
+          <p>
+            He pulled out a tin box the size of a shoebox, black with age and sealed shut by rust.
+          </p>
+
+          <p>
+            Inside was not a body.
+          </p>
+
+          <p>
+            Not a weapon.
+          </p>
+
+          <p>
+            Not anything dramatic enough to justify fourteen years of fear.
+          </p>
+
+          <p>
+            It was a stack of letters.
+          </p>
+
+          <p>
+            Some addressed to his mother.
+          </p>
+
+          <p>
+            Some addressed to Elias.
+          </p>
+
+          <p>
+            And on top of them all, a folded police report dated three days after his father vanished.
+          </p>
+
+          <p>
+            It had never been filed.
+          </p>
+
+          <p>
+            His mother had written it herself.
+          </p>
+
+          <p>
+            A full statement describing the fight, the injury, Elias seeing it, and her decision not to send the report because she believed public truth would destroy what little stability her son had left.
+          </p>
+
+          <p>
+            At the bottom, in a shaky line written days later, she had added:
+          </p>
+
+          <p><strong>I chose survival over honesty. I still do not know if that was motherhood or cowardice.</strong></p>
+
+          <div class="story-break"><span></span></div>
+
+          <p>
+            Dawn came grey and slow.
+          </p>
+
+          <p>
+            Elias sat on the kitchen floor with the letters spread around him, the tape recorder silent beside his knee.
+          </p>
+
+          <p>
+            The storm had passed.
+          </p>
+
+          <p>
+            Water dripped from the gutters outside in patient intervals.
+          </p>
+
+          <p>
+            He had read all the letters by sunrise.
+          </p>
+
+          <p>
+            Some were apologies from his father, written from different cities and never mailed.
+          </p>
+
+          <p>
+            Some were from his mother, addressed to a man she hated, loved, feared, and refused to forgive in equal measure, though she never sent hers either.
+          </p>
+
+          <p>
+            One letter, written in his mother’s hand but addressed to Elias, was different.
+          </p>
+
+          <p>
+            It had no envelope.
+          </p>
+
+          <p>
+            No stamp.
+          </p>
+
+          <p>
+            Only a date from two years earlier, when her handwriting had already begun to weaken.
+          </p>
+
+          <p>
+            He unfolded it carefully.
+          </p>
+
+          <p>
+            <strong>Elias,</strong>
+          </p>
+
+          <p>
+            <strong>If you are reading this, then the house finally stopped helping me hide.</strong>
+          </p>
+
+          <p>
+            <strong>I told myself forgetting was a gift. I told myself I was protecting you from a night no child should carry. But forgetting did not erase what happened. It only buried it in the walls, in the floor, in the shape of your fears. You still grew around it. You still lived with it. You just never had a name for it.</strong>
+          </p>
+
+          <p>
+            <strong>I kept the house because I thought I was guarding the secret. What I was really doing was guarding the evidence that memory does not disappear simply because we refuse to speak it aloud.</strong>
+          </p>
+
+          <p>
+            <strong>I do not ask you to forgive me. I ask only that you stop letting silence decide what your life means.</strong>
+          </p>
+
+          <p>
+            Elias lowered the letter.
+          </p>
+
+          <p>
+            Morning light was beginning to fill the kitchen.
+          </p>
+
+          <p>
+            For the first time since arriving, the house no longer felt watchful.
+          </p>
+
+          <p>
+            It felt tired.
+          </p>
+
+          <p>
+            As if it had been holding its breath for years and had finally exhaled.
+          </p>
+
+          <div class="story-break"><span></span></div>
+
+          <p>
+            By noon, Elias made three decisions.
+          </p>
+
+          <p>
+            First, he would not sell the house immediately.
+          </p>
+
+          <p>
+            Not because he wanted to keep it, but because endings deserved more honesty than his family had ever given them.
+          </p>
+
+          <p>
+            Second, he would file the statement his mother never sent, along with the letters and the tape.
+          </p>
+
+          <p>
+            There would be no trial. Too much time had passed. His father might already be dead.
+          </p>
+
+          <p>
+            But truth, even late truth, still mattered.
+          </p>
+
+          <p>
+            And third, he would stop saying his father vanished.
+          </p>
+
+          <p>
+            Vanishing was too clean a word.
+          </p>
+
+          <p>
+            Too elegant.
+          </p>
+
+          <p>
+            His father had not vanished.
+          </p>
+
+          <p>
+            He had done harm.
+          </p>
+
+          <p>
+            His mother had hidden it.
+          </p>
+
+          <p>
+            And Elias had built an adult life around the shape of an unnamed wound.
+          </p>
+
+          <p>
+            That was the truth.
+          </p>
+
+          <p>
+            Ugly, incomplete, human truth.
+          </p>
+
+          <p>
+            But truth all the same.
+          </p>
+
+          <p>
+            He stood in the hallway with his car keys in hand and looked back one last time.
+          </p>
+
+          <p>
+            The grandfather clock still read 2:17.
+          </p>
+
+          <p>
+            The umbrella stand was still by the door.
+          </p>
+
+          <p>
+            The house remained old, dark, and deeply ordinary.
+          </p>
+
+          <p>
+            Yet Elias understood something now that he had not understood as a boy.
+          </p>
+
+          <p>
+            Houses do not keep memories because they are haunted.
+          </p>
+
+          <p>
+            They keep memories because people leave them there.
+          </p>
+
+          <p>
+            In floorboards.
+          </p>
+
+          <p>
+            In locked drawers.
+          </p>
+
+          <p>
+            In unfinished letters.
+          </p>
+
+          <p>
+            In the names families refuse to say out loud.
+          </p>
+
+          <p>
+            He opened the front door.
+          </p>
+
+          <p>
+            Outside, the rain had stopped.
+          </p>
+
+          <p>
+            The street gleamed silver under a clearing sky.
+          </p>
+
+          <p>
+            Elias stepped onto the porch, shut the door behind him, and heard one final sound from inside the house.
+          </p>
+
+          <p>
+            Not scratching.
+          </p>
+
+          <p>
+            Not footsteps.
+          </p>
+
+          <p>
+            Just the quiet click of the grandfather clock beginning to move again.
+          </p>
+        </article>
+
+        <div class="story-note">
+          <h3>Reader Note</h3>
+          <p>
+            <strong>House Edge Memory</strong> is a story about the way silence reshapes memory and how families sometimes confuse secrecy with protection.
+            Beneath the haunted-house atmosphere and psychological mystery, it explores a more human fear: that the stories we tell to survive can become the same stories that keep us trapped.
+            Elias’s return is not really about uncovering a supernatural secret — it is about learning that truth delayed still leaves a mark, and that some houses feel haunted only because no one has ever been brave enough to speak clearly inside them.
+          </p>
+        </div>
+
+        <div class="story-actions">
+          <a href="stories.html" class="btn btn-primary">← Back to Stories</a>
+          <a href="about.html" class="btn btn-secondary">About Thoughts Draft</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-heading">
+        <h2>Read More Stories from Thoughts Draft</h2>
+        <p>
+          If you enjoyed <strong>House Edge Memory</strong>, explore more original stories filled with mystery,
+          emotional tension, suspense, reflection, and unforgettable characters.
+        </p>
+      </div>
+
+      <div class="related-grid">
+        <article class="related-card">
+          <span class="story-tag">Mystery</span>
+          <h3>The Silent Witness</h3>
+          <p>A robbery, an unspeaking observer, and a quiet man whose paintings reveal more than anyone expected.</p>
+          <a href="the-silent-witness.html">Read Story →</a>
+        </article>
+
+        <article class="related-card">
+          <span class="story-tag">Suspense</span>
+          <h3>Echoes of Midnight</h3>
+          <p>A mysterious phone call after midnight leads to answers no one expected and secrets that refused to stay buried.</p>
+          <a href="echoes-of-midnight.html">Read Story →</a>
+        </article>
+
+        <article class="related-card">
+          <span class="story-tag">Drama</span>
+          <h3>The Last Letter in the Drawer</h3>
+          <p>A hidden letter reveals a family secret decades in the making and forces the past back into the present.</p>
+          <a href="last-letter.html">Read Story →</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container footer-wrap">
+      <div class="footer-brand">
+        <div class="logo">Thoughts <span>Draft</span></div>
+        <p>Original stories, reflective writing, and unforgettable narratives.</p>
+      </div>
+
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="stories.html">Stories</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="terms.html">Terms & Conditions</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const menuToggle = document.getElementById("menuToggle");
+    const mobileNav = document.getElementById("mobileNav");
+
+    menuToggle.addEventListener("click", () => {
+      mobileNav.classList.toggle("open");
+      menuToggle.classList.toggle("active");
+
+      const expanded = menuToggle.getAttribute("aria-expanded") === "true";
+      menuToggle.setAttribute("aria-expanded", !expanded);
+    });
+
+    document.querySelectorAll(".nav-links a").forEach(link => {
+      link.addEventListener("click", () => {
+        mobileNav.classList.remove("open");
+        menuToggle.classList.remove("active");
+        menuToggle.setAttribute("aria-expanded", "false");
+      });
+    });
+
+    document.addEventListener("click", (e) => {
+      const isClickInsideNav = e.target.closest("nav");
+      if (!isClickInsideNav && mobileNav.classList.contains("open")) {
+        mobileNav.classList.remove("open");
+        menuToggle.classList.remove("active");
+        menuToggle.setAttribute("aria-expanded", "false");
+      }
+    });
+  </script>
+
+</body>
+</html>

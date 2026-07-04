@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>When the Stars Fell Silent | Thoughts Draft</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="favicon.png">
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4854306717629925"
+    crossorigin="anonymous"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    :root {
+      --bg: #0b0b0b;
+      --card: #151515;
+      --card-2: #1b1b1b;
+      --border: #262626;
+      --text: #ffffff;
+      --muted: #c2c2c2;
+      --muted-2: #8f8f8f;
+      --accent: #e50914;
+      --accent-hover: #ff2c38;
+      --max-width: 1180px;
+      --reading-width: 820px;
+      --radius: 14px;
+      --shadow: 0 14px 40px rgba(0, 0, 0, 0.25);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.9;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      width: min(100% - 40px, var(--max-width));
+      margin: 0 auto;
+    }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(11, 11, 11, 0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    nav {
+      min-height: 78px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      position: relative;
+    }
+
+    .logo {
+      font-size: 1.7rem;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      color: var(--text);
+      z-index: 1002;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 26px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: #ededed;
+      font-size: 0.98rem;
+      transition: color 0.25s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--accent);
+    }
+
+    .menu-toggle {
+      display: none;
+      width: 48px;
+      height: 48px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: #131313;
+      border-radius: 12px;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      z-index: 1002;
+      transition: 0.25s ease;
+    }
+
+    .menu-toggle:hover {
+      border-color: rgba(255,255,255,0.22);
+      background: #181818;
+    }
+
+    .menu-toggle span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: #fff;
+      border-radius: 999px;
+      position: relative;
+      transition: 0.3s ease;
+    }
+
+    .menu-toggle span::before,
+    .menu-toggle span::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      width: 22px;
+      height: 2px;
+      background: #fff;
+      border-radius: 999px;
+      transition: 0.3s ease;
+    }
+
+    .menu-toggle span::before {
+      top: -7px;
+    }
+
+    .menu-toggle span::after {
+      top: 7px;
+    }
+
+    .menu-toggle.active span {
+      background: transparent;
+    }
+
+    .menu-toggle.active span::before {
+      top: 0;
+      transform: rotate(45deg);
+    }
+
+    .menu-toggle.active span::after {
+      top: 0;
+      transform: rotate(-45deg);
+    }
+
+    /* Hero */
+    .story-hero {
+      position: relative;
+      padding: 100px 0 72px;
+      overflow: hidden;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0.42), rgba(0,0,0,0.82)),
+        radial-gradient(circle at top center, rgba(229, 9, 20, 0.18), transparent 34%);
+    }
+
+    .story-hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to right, rgba(0,0,0,0.82), rgba(0,0,0,0.55)),
+        radial-gradient(circle at center, rgba(150, 0, 0, 0.18), transparent 38%);
+      opacity: 1;
+    }
+
+    .story-hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 18px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(229, 9, 20, 0.12);
+      color: #ffd5d8;
+      border: 1px solid rgba(229, 9, 20, 0.24);
+      font-size: 0.9rem;
+    }
+
+    .story-hero h1 {
+      font-size: clamp(2.5rem, 5vw, 4.3rem);
+      line-height: 1.08;
+      margin-bottom: 16px;
+    }
+
+    .story-hero p {
+      color: var(--muted);
+      max-width: 760px;
+      margin: 0 auto;
+      font-size: 1.05rem;
+    }
+
+    .story-meta-bar {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 26px;
+    }
+
+    .meta-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 16px;
+      border-radius: 999px;
+      background: rgba(20,20,20,0.95);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #ededed;
+      box-shadow: var(--shadow);
+      font-size: 0.95rem;
+    }
+
+    section {
+      padding: 80px 0;
+    }
+
+    .section-heading {
+      max-width: 760px;
+      margin: 0 auto 38px;
+      text-align: center;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(1.75rem, 3vw, 2.4rem);
+      margin-bottom: 12px;
+    }
+
+    .section-heading p {
+      color: var(--muted);
+    }
+
+    /* Intro cards */
+    .story-intro-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 26px;
+      align-items: stretch;
+    }
+
+    .panel {
+      background: linear-gradient(180deg, var(--card) 0%, #101010 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      box-shadow: var(--shadow);
+    }
+
+    .panel h2 {
+      font-size: 1.75rem;
+      margin-bottom: 14px;
+    }
+
+    .panel p {
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .theme-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .theme-item {
+      background: linear-gradient(180deg, #171717 0%, #111111 100%);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+    }
+
+    .theme-item strong {
+      display: block;
+      margin-bottom: 6px;
+      color: #fff;
+    }
+
+    .theme-item span {
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    /* Story article */
+    .reading-wrap {
+      max-width: var(--reading-width);
+      margin: 0 auto;
+    }
+
+    .story-article {
+      background: linear-gradient(180deg, #141414 0%, #101010 100%);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 42px;
+      box-shadow: var(--shadow);
+    }
+
+    .story-article p {
+      color: #dedede;
+      margin-bottom: 18px;
+      font-size: 1.04rem;
+    }
+
+    .story-article p.lead:first-letter {
+      float: left;
+      font-size: 3.4rem;
+      line-height: 0.92;
+      padding-right: 10px;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .story-article strong {
+      color: #fff;
+    }
+
+    .story-break {
+      margin: 34px 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    .story-break span {
+      width: 90px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(255,255,255,0.22), transparent);
+      display: block;
+    }
+
+    /* Story footer note */
+    .story-note {
+      max-width: var(--reading-width);
+      margin: 28px auto 0;
+      background:
+        radial-gradient(circle at top right, rgba(229, 9, 20, 0.12), transparent 30%),
+        linear-gradient(180deg, #171717 0%, #121212 100%);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .story-note h3 {
+      margin-bottom: 12px;
+      font-size: 1.2rem;
+    }
+
+    .story-note p {
+      color: var(--muted);
+    }
+
+    /* CTA buttons */
+    .story-actions {
+      max-width: var(--reading-width);
+      margin: 28px auto 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 50px;
+      padding: 0 24px;
+      border-radius: 999px;
+      font-weight: 700;
+      border: 1px solid transparent;
+      transition: 0.25s ease;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: #161616;
+      border-color: var(--border);
+      color: #fff;
+    }
+
+    .btn-secondary:hover {
+      border-color: rgba(229, 9, 20, 0.32);
+      color: var(--accent);
+    }
+
+    /* More stories */
+    .related-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .related-card {
+      background: linear-gradient(180deg, var(--card) 0%, var(--card-2) 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+      box-shadow: var(--shadow);
+    }
+
+    .related-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(229, 9, 20, 0.28);
+    }
+
+    .story-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(229, 9, 20, 0.1);
+      color: #ffd7da;
+      border: 1px solid rgba(229, 9, 20, 0.2);
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .related-card h3 {
+      font-size: 1.18rem;
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+
+    .related-card p {
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .related-card a {
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .related-card a:hover {
+      color: var(--accent);
+    }
+
+    footer {
+      padding: 32px 0 50px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      background: #0b0b0b;
+      margin-top: 30px;
+    }
+
+    .footer-wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .footer-brand p {
+      color: var(--muted-2);
+      margin-top: 6px;
+      font-size: 0.95rem;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: #d5d5d5;
+      transition: color 0.25s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+
+    @media (max-width: 1100px) {
+      .story-intro-grid,
+      .related-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 820px) {
+      .menu-toggle {
+        display: inline-flex;
+      }
+
+      .nav-links {
+        position: absolute;
+        top: calc(100% + 14px);
+        left: 0;
+        right: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        background: rgba(14, 14, 14, 0.98);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 20px 45px rgba(0,0,0,0.35);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-12px);
+        transition: 0.3s ease;
+        pointer-events: none;
+      }
+
+      .nav-links.open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+
+      .nav-links li {
+        width: 100%;
+      }
+
+      .nav-links a {
+        display: block;
+        width: 100%;
+        padding: 16px 20px;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+      }
+
+      .nav-links li:last-child a {
+        border-bottom: none;
+      }
+
+      section {
+        padding: 65px 0;
+      }
+
+      .story-hero {
+        padding: 85px 0 60px;
+      }
+
+      .panel,
+      .story-article,
+      .related-card,
+      .story-note {
+        padding: 24px;
+      }
+
+      .footer-wrap {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .story-hero h1 {
+        font-size: 2.2rem;
+      }
+
+      .story-article p {
+        font-size: 1rem;
+      }
+
+      .story-actions {
+        flex-direction: column;
+      }
+
+      .story-actions .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">Thoughts <span>Draft</span></div>
+
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="mobileNav">
+          <span></span>
+        </button>
+
+        <ul class="nav-links" id="mobileNav">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="stories.html" class="active">Stories</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section class="story-hero">
+    <div class="container story-hero-inner">
+      <span class="eyebrow">Original Story • Fantasy / Adventure / Hope</span>
+      <h1>When the Stars Fell Silent</h1>
+      <p>
+        In a kingdom where the stars once sang across the night sky, an eighteen-year-old dreamer sets out to restore the melody before silence steals hope from the world forever.
+      </p>
+
+      <div class="story-meta-bar">
+        <div class="meta-pill">Published June 2026</div>
+        <div class="meta-pill">Approx. 12 min read</div>
+        <div class="meta-pill">Fantasy Adventure</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="story-intro-grid">
+        <div class="panel">
+          <h2>About This Story</h2>
+          <p>
+            <strong>When the Stars Fell Silent</strong> is a fantasy adventure about wonder, hope, and the fragile connection between imagination and the world around us.
+            Set in the Kingdom of Astria, it follows Lyra as she journeys beyond familiar borders to restore the lost song of the stars.
+          </p>
+          <p>
+            What begins as a mystery about silence gradually becomes a story about belief, courage, and the quiet ways despair can shape an entire world.
+          </p>
+          <p>
+            At its heart, the story asks what happens when people stop believing in possibility — and what it takes to make hope sing again.
+          </p>
+        </div>
+
+        <div class="panel">
+          <h2>Story Themes</h2>
+          <div class="theme-list">
+            <div class="theme-item">
+              <strong>Hope & Wonder</strong>
+              <span>The story explores how hope can fade quietly over time, and how wonder can become the force that restores it.</span>
+            </div>
+
+            <div class="theme-item">
+              <strong>Dreams & Possibility</strong>
+              <span>Lyra’s journey reflects the power of holding on to dreams even when the world around her has grown doubtful and silent.</span>
+            </div>
+
+            <div class="theme-item">
+              <strong>Silence & Renewal</strong>
+              <span>The silence of the stars becomes a symbol of lost inspiration, while their returning melody represents renewal, healing, and belief.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="reading-wrap">
+        <article class="story-article">
+          <p class="lead">
+            For as long as anyone could remember, the stars sang.
+          </p>
+
+          <p>Not with voices.</p>
+          <p>Not with words.</p>
+          <p>But with a faint, beautiful melody that drifted across the night sky.</p>
+          <p>People in the Kingdom of Astria grew up listening to it.</p>
+          <p>Children fell asleep to it.</p>
+          <p>Travelers followed it.</p>
+          <p>Dreamers drew inspiration from it.</p>
+          <p>The music of the stars was as natural as the wind.</p>
+          <p>Until the night it stopped.</p>
+
+          <div class="story-break"><span></span></div>
+
+          <p>Without warning, the melody vanished.</p>
+          <p>The stars still shone above.</p>
+          <p>But they were silent.</p>
+          <p>The world changed almost immediately.</p>
+          <p>Artists struggled to create.</p>
+          <p>Writers abandoned unfinished stories.</p>
+          <p>Musicians put away their instruments.</p>
+          <p>Something invisible had been lost.</p>
+          <p>Nobody understood why.</p>
+          <p>Nobody knew how to restore it.</p>
+          <p>Eighteen-year-old Lyra refused to accept that silence was permanent.</p>
+          <p>She had spent her childhood staring at the night sky from the roof of her family's home.</p>
+          <p>The stars had inspired every dream she ever had.</p>
+          <p>Now the silence felt wrong.</p>
+          <p>Like a missing heartbeat.</p>
+
+          <div class="story-break"><span></span></div>
+
+          <p>One evening, while exploring an abandoned observatory outside the city, Lyra discovered an ancient journal.</p>
+          <p>Its pages described a legend nearly forgotten by time.</p>
+          <p>According to the journal, the stars were connected to something called the Heart of the Sky.</p>
+          <p>A crystal hidden beyond the Northern Mountains.</p>
+          <p>If the Heart ever faded, the stars would fall silent.</p>
+          <p>And if the silence lasted too long, hope itself would begin to disappear.</p>
+          <p>Lyra knew what she had to do.</p>
+          <p>She packed a bag and left at sunrise.</p>
+
+          <div class="story-break"><span></span></div>
+
+          <p>The journey was long.</p>
+          <p>She crossed forests where ancient trees touched the clouds.</p>
+          <p>She traveled through valleys hidden beneath morning mist.</p>
+          <p>She climbed mountains that seemed to stretch forever.</p>
+          <p>Along the way, she met people who had also been affected by the silence.</p>
+          <p>A musician who could no longer compose.</p>
+          <p>A painter who had lost inspiration.</p>
+          <p>A teacher struggling to encourage hopeful dreams in her students.</p>
+          <p>Each shared their story.</p>
+          <p>Each reminded Lyra why her journey mattered.</p>
+
+          <div class="story-break"><span></span></div>
+
+          <p>Weeks later, she reached the summit of the Northern Mountains.</p>
+          <p>There, hidden within a cave of crystal and ice, she found the Heart of the Sky.</p>
+          <p>The crystal still existed.</p>
+          <p>But its light was fading.</p>
+          <p>Tiny cracks covered its surface.</p>
+          <p>Beside it stood an inscription:</p>
+          <p><strong>“The stars reflect what lives within the hearts of dreamers.”</strong></p>
+          <p>Lyra read the words again.</p>
+          <p>Then she understood.</p>
+          <p>The Heart had not been damaged by time.</p>
+          <p>It had weakened because people had stopped believing in possibilities.</p>
+          <p>Fear.</p>
+          <p>Doubt.</p>
+          <p>Cynicism.</p>
+          <p>These things had slowly dimmed the light.</p>
+          <p>The silence wasn't the cause of the world's sadness.</p>
+          <p>It was the result.</p>
+
+          <div class="story-break"><span></span></div>
+
+          <p>Lyra stepped forward and placed her hands on the crystal.</p>
+          <p>She thought about every dream she had ever held.</p>
+          <p>Every story she wanted to write.</p>
+          <p>Every adventure she hoped to experience.</p>
+          <p>Every person she wanted to help.</p>
+          <p>The crystal began to glow.</p>
+          <p>At first, only faintly.</p>
+          <p>Then brighter.</p>
+          <p>And brighter.</p>
+          <p>Until the entire cave was filled with light.</p>
+          <p>The cracks vanished.</p>
+          <p>The Heart of the Sky pulsed with energy once more.</p>
+
+          <div class="story-break"><span></span></div>
+
+          <p>Far above, the stars responded.</p>
+          <p>Their melody returned.</p>
+          <p>Soft at first.</p>
+          <p>Then stronger.</p>
+          <p>The song spread across the kingdom.</p>
+          <p>Across mountains.</p>
+          <p>Across oceans.</p>
+          <p>Across every sleeping town and bustling city.</p>
+          <p>People looked upward in amazement.</p>
+          <p>The music had returned.</p>
+          <p>And with it came inspiration.</p>
+          <p>Hope.</p>
+          <p>Wonder.</p>
+
+          <div class="story-break"><span></span></div>
+
+          <p>Years later, Lyra would become one of Astria's most beloved storytellers.</p>
+          <p>Whenever people asked how she restored the stars, she always answered the same way:</p>
+          <p><strong>“The stars never lost their song.”</strong></p>
+          <p><strong>“We simply forgot how to listen.”</strong></p>
+          <p>And every night thereafter, the melody continued to echo across the heavens.</p>
+          <p>A reminder that hope may grow quiet, but it never truly disappears.</p>
+        </article>
+
+        <div class="story-note">
+          <h3>Reader Note</h3>
+          <p>
+            <strong>When the Stars Fell Silent</strong> is a story about hope as something that can dim, but never fully vanish.
+            Beneath the fantasy setting and celestial mystery, it reflects on creativity, belief, and the quiet danger of giving up on possibility.
+            Lyra’s journey becomes a reminder that sometimes the world does not need new light — it needs people willing to believe in it again.
+          </p>
+        </div>
+
+        <div class="story-actions">
+          <a href="stories.html" class="btn btn-primary">← Back to Stories</a>
+          <a href="about.html" class="btn btn-secondary">About Thoughts Draft</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-heading">
+        <h2>Read More Stories from Thoughts Draft</h2>
+        <p>
+          If you enjoyed <strong>When the Stars Fell Silent</strong>, explore more original stories filled with mystery,
+          imagination, emotion, suspense, and unforgettable journeys.
+        </p>
+      </div>
+
+      <div class="related-grid">
+        <article class="related-card">
+          <span class="story-tag">Fantasy</span>
+          <h3>Beneath Crimson Skies</h3>
+          <p>When the sky turns crimson, a boy must restore the Seven Lights and bring wonder back to a fading world.</p>
+          <a href="beneath-crimson-skies.html">Read Story →</a>
+        </article>
+
+        <article class="related-card">
+          <span class="story-tag">Mystery</span>
+          <h3>The Last Letter in the Drawer</h3>
+          <p>A hidden letter reveals a family secret decades in the making and forces the past back into the present.</p>
+          <a href="last-letter.html">Read Story →</a>
+        </article>
+
+        <article class="related-card">
+          <span class="story-tag">Suspense</span>
+          <h3>Echoes of Midnight</h3>
+          <p>A mysterious phone call after midnight leads to answers no one expected and secrets that refused to stay buried.</p>
+          <a href="echoes-of-midnight.html">Read Story →</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container footer-wrap">
+      <div class="footer-brand">
+        <div class="logo">Thoughts <span>Draft</span></div>
+        <p>Original stories, reflective writing, and unforgettable narratives.</p>
+      </div>
+
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="stories.html">Stories</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="terms.html">Terms & Conditions</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const menuToggle = document.getElementById("menuToggle");
+    const mobileNav = document.getElementById("mobileNav");
+
+    menuToggle.addEventListener("click", () => {
+      mobileNav.classList.toggle("open");
+      menuToggle.classList.toggle("active");
+
+      const expanded = menuToggle.getAttribute("aria-expanded") === "true";
+      menuToggle.setAttribute("aria-expanded", !expanded);
+    });
+
+    document.querySelectorAll(".nav-links a").forEach(link => {
+      link.addEventListener("click", () => {
+        mobileNav.classList.remove("open");
+        menuToggle.classList.remove("active");
+        menuToggle.setAttribute("aria-expanded", "false");
+      });
+    });
+
+    document.addEventListener("click", (e) => {
+      const isClickInsideNav = e.target.closest("nav");
+      if (!isClickInsideNav && mobileNav.classList.contains("open")) {
+        mobileNav.classList.remove("open");
+        menuToggle.classList.remove("active");
+        menuToggle.setAttribute("aria-expanded", "false");
+      }
+    });
+  </script>
+
+</body>
+</html>
