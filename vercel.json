@@ -1,0 +1,37 @@
+{
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/stories.html", "destination": "/stories", "permanent": true },
+    { "source": "/about.html", "destination": "/about", "permanent": true },
+    { "source": "/contact.html", "destination": "/contact", "permanent": true },
+    { "source": "/privacy-policy.html", "destination": "/privacy-policy", "permanent": true },
+    { "source": "/terms.html", "destination": "/terms", "permanent": true },
+
+    { "source": "/the-last-letter-in-the-drawer.html", "destination": "/the-last-letter-in-the-drawer", "permanent": true },
+    { "source": "/echoes-of-midnight.html", "destination": "/echoes-of-midnight", "permanent": true },
+    { "source": "/the-stranger-on-platform-seven.html", "destination": "/the-stranger-on-platform-seven", "permanent": true },
+    { "source": "/beneath-crimson-skies.html", "destination": "/beneath-crimson-skies", "permanent": true },
+    { "source": "/the-silent-witness.html", "destination": "/the-silent-witness", "permanent": true },
+    { "source": "/a-promise-beyond-time.html", "destination": "/a-promise-beyond-time", "permanent": true },
+    { "source": "/the-forgotten-key.html", "destination": "/the-forgotten-key", "permanent": true },
+    { "source": "/the-lighthouse-keepers-secret.html", "destination": "/the-lighthouse-keepers-secret", "permanent": true },
+    { "source": "/the-girl-who-knew-tomorrow.html", "destination": "/the-girl-who-knew-tomorrow", "permanent": true }
+  ],
+  "rewrites": [
+    { "source": "/stories", "destination": "/stories.html" },
+    { "source": "/about", "destination": "/about.html" },
+    { "source": "/contact", "destination": "/contact.html" },
+    { "source": "/privacy-policy", "destination": "/privacy-policy.html" },
+    { "source": "/terms", "destination": "/terms.html" },
+
+    { "source": "/the-last-letter-in-the-drawer", "destination": "/the-last-letter-in-the-drawer.html" },
+    { "source": "/echoes-of-midnight", "destination": "/echoes-of-midnight.html" },
+    { "source": "/the-stranger-on-platform-seven", "destination": "/the-stranger-on-platform-seven.html" },
+    { "source": "/beneath-crimson-skies", "destination": "/beneath-crimson-skies.html" },
+    { "source": "/the-silent-witness", "destination": "/the-silent-witness.html" },
+    { "source": "/a-promise-beyond-time", "destination": "/a-promise-beyond-time.html" },
+    { "source": "/the-forgotten-key", "destination": "/the-forgotten-key.html" },
+    { "source": "/the-lighthouse-keepers-secret", "destination": "/the-lighthouse-keepers-secret.html" },
+    { "source": "/the-girl-who-knew-tomorrow", "destination": "/the-girl-who-knew-tomorrow.html" }
+  ]
+}
